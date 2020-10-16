@@ -110,11 +110,9 @@ class _AddGameScreenState extends State<AddGameScreen> {
               color: Colors.deepOrangeAccent,
               textColor: Colors.white,
               onPressed: () {
-                print("Kaydet");
-                for (int i = 0; i < playerPoints.length; i++) {
-                  Provider.of<GameProvider>(context, listen: false)
-                      .addGame(playerPoints);
-                }
+                Provider.of<GameProvider>(context, listen: false)
+                    .addGame(playerPoints);
+                Navigator.pop(context);
               },
             ),
           ],

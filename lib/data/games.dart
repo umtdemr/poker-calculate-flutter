@@ -16,4 +16,9 @@ class GameProvider extends ChangeNotifier {
     _games.add(users);
     notifyListeners();
   }
+
+  void deleteGameWithIndex(int index) {
+    _games.removeAt(index);
+    notifyListeners();
+  }
 }

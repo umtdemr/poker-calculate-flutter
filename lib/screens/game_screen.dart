@@ -27,6 +27,12 @@ class _GameScreenState extends State<GameScreen> {
             builder: (context, playerProvider, gameProvider, child) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text("Güncel Durum",
+                    style:
+                        TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold)),
+                SizedBox(
+                  height: 12.0,
+                ),
                 Expanded(
                   child: Row(
                     children: [
@@ -56,7 +62,6 @@ class _GameScreenState extends State<GameScreen> {
                 Expanded(
                   flex: 4,
                   child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
                     itemCount: gameProvider.games.length,
                     itemBuilder: (context, index) {
                       List<Widget> widgets = [];
@@ -66,8 +71,30 @@ class _GameScreenState extends State<GameScreen> {
                           price: usr.price.toString(),
                         ));
                       }
-                      return Row(
-                        children: widgets,
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                "${index + 1}",
+                                style: TextStyle(fontSize: 20.0),
+                              ),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              ...widgets,
+                              IconButton(
+                                icon: Icon(Icons.close),
+                                onPressed: () {
+                                  print(index);
+                                  gameProvider.deleteGameWithIndex(index);
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                       );
                     },
                   ),
