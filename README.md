@@ -1,6 +1,6 @@
 # Poker Games Stats Calculator
 
-An app maded for calculating poker games stats for my friends who are bad at math
+An app made for calculating poker games stats for my friends who are bad at math
 
 ## TO DO
 
