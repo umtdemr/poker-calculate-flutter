@@ -1,8 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:poker/models/user.dart';
 
+import '../models/user.dart';
+
 class PlayerProivder extends ChangeNotifier {
-  List<User> _players = [];
+  List<User> _players = [
+    User(name: "Ümit", price: 100),
+    User(name: "Fatih", price: 100),
+    User(name: "Kadir", price: 100),
+    User(name: "Mert", price: 100),
+  ];
 
   List<User> get players => _players;
 

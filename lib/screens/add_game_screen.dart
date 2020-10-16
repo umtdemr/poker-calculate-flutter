@@ -4,6 +4,12 @@ import 'package:poker/data/players.dart';
 import 'package:poker/models/user.dart';
 import 'package:provider/provider.dart';
 
+import '../data/games.dart';
+import '../data/players.dart';
+import '../data/players.dart';
+import '../data/players.dart';
+import '../data/players.dart';
+
 class AddGameScreen extends StatefulWidget {
   @override
   _AddGameScreenState createState() => _AddGameScreenState();
@@ -110,8 +116,21 @@ class _AddGameScreenState extends State<AddGameScreen> {
               color: Colors.deepOrangeAccent,
               textColor: Colors.white,
               onPressed: () {
-                Provider.of<GameProvider>(context, listen: false)
-                    .addGame(playerPoints);
+                for (int i = 0; i < playerPoints.length; i++) {
+                  User thisUser =
+                      Provider.of<PlayerProivder>(context, listen: false)
+                          .players[i];
+                  int newPrice = thisUser.price + playerPoints[i].price;
+                  if (newPrice > 0) {
+                    thisUser.price = newPrice;
+                  } else {
+                    Provider.of<PlayerProivder>(context, listen: false)
+                        .deletePlayer(thisUser);
+                  }
+                }
+                Provider.of<GameProvider>(context, listen: false).addGame(
+                    Provider.of<PlayerProivder>(context, listen: false)
+                        .players);
                 Navigator.pop(context);
               },
             ),

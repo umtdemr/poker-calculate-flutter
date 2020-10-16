@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Color(0xFFF2F2F2),
                     onPressed: () {
                       playerProvider.setAllPrice(_price);
-                      gameProvider.addFirstInstance(playerProvider.players);
+                      gameProvider.addGame(playerProvider.players);
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => GameScreen()),
