@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poker/data/games.dart';
 import 'package:poker/data/players.dart';
 import 'package:poker/models/user.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,22 @@ class AddGameScreen extends StatefulWidget {
 
 class _AddGameScreenState extends State<AddGameScreen> {
   int denemePoint = -5;
+  List<User> playerPoints = [];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    for (User user in Provider.of<PlayerProivder>(context).players) {
+      User willAddUser = User(name: user.name, price: -5);
+      print("Burada:" +
+          playerPoints.indexOf(willAddUser).toString() +
+          " " +
+          willAddUser.name);
+      playerPoints.add(willAddUser);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,13 +41,13 @@ class _AddGameScreenState extends State<AddGameScreen> {
           ),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Container(
               height: 250.0,
               child: ListView.builder(
-                itemCount: Provider.of<PlayerProivder>(context).players.length,
+                itemCount: playerPoints.length,
                 itemBuilder: (context, index) {
-                  int this_point = 5;
                   return Container(
                     padding:
                         EdgeInsets.symmetric(horizontal: 10.0, vertical: 25.0),
@@ -43,9 +60,7 @@ class _AddGameScreenState extends State<AddGameScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          Provider.of<PlayerProivder>(context)
-                              .players[index]
-                              .name,
+                          playerPoints[index].name,
                           style: TextStyle(fontSize: 22.0),
                         ),
                         Row(
@@ -56,8 +71,7 @@ class _AddGameScreenState extends State<AddGameScreen> {
                               child: IconButton(
                                 onPressed: () {
                                   setState(() {
-                                    denemePoint -= 5;
-                                    print("selam" + denemePoint.toString());
+                                    playerPoints[index].price -= 5;
                                   });
                                 },
                                 icon: Icon(Icons.remove),
@@ -66,7 +80,7 @@ class _AddGameScreenState extends State<AddGameScreen> {
                             ),
                             SizedBox(width: 10.0),
                             Text(
-                              this_point.toString(),
+                              playerPoints[index].price.toString(),
                               style: TextStyle(fontSize: 40.0),
                             ),
                             SizedBox(width: 10.0),
@@ -76,8 +90,7 @@ class _AddGameScreenState extends State<AddGameScreen> {
                               child: IconButton(
                                 onPressed: () {
                                   setState(() {
-                                    this_point = this_point + 5;
-                                    print(this_point);
+                                    playerPoints[index].price += 5;
                                   });
                                 },
                                 icon: Icon(Icons.add),
@@ -94,6 +107,15 @@ class _AddGameScreenState extends State<AddGameScreen> {
             ),
             RaisedButton(
               child: Text("Kaydet"),
+              color: Colors.deepOrangeAccent,
+              textColor: Colors.white,
+              onPressed: () {
+                print("Kaydet");
+                for (int i = 0; i < playerPoints.length; i++) {
+                  Provider.of<GameProvider>(context, listen: false)
+                      .addGame(playerPoints);
+                }
+              },
             ),
           ],
         ),
