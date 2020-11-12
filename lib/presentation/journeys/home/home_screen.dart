@@ -88,6 +88,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               );
             }
+            if (state is RoomLoaded) {
+              print(state.accessKey);
+            }
             return Text("yükle");
           },
         ),
