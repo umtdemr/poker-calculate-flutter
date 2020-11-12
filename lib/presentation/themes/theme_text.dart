@@ -58,4 +58,9 @@ extension ThemeTextExtension on TextTheme {
   TextStyle get violetHeadline6 => headline6.copyWith(
         color: AppColor.violet,
       );
+  TextStyle get decrementedText => subtitle1.copyWith(color: Colors.red);
+  TextStyle get incrementedText => subtitle1.copyWith(
+        color: Colors.green,
+        fontWeight: FontWeight.bold,
+      );
 }

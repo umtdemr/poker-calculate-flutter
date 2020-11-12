@@ -13,8 +13,6 @@ class RoundAppBar extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(
         top: ScreenUtil.statusBarHeight + Sizes.dimen_6.h,
-        left: Sizes.dimen_12.w,
-        right: Sizes.dimen_12.w,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

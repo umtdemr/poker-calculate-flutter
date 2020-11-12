@@ -35,10 +35,12 @@ class Round extends RoundEntity {
 }
 
 _items(Map<String, dynamic> json) {
+  print(json["item"]);
   if (json['item'] != null) {
     final item = new List<Item>();
     json['item'].forEach((v) {
       item.add(new Item.fromJson(v));
     });
+    return item;
   }
 }

@@ -1,20 +1,22 @@
 class Item {
-  int id;
-  String name;
-  String money;
-  String created;
-  String control;
-  int item;
+  final int id;
+  final String name;
+  final String money;
+  final String created;
+  final String control;
+  final int item;
 
   Item({this.id, this.name, this.money, this.created, this.control, this.item});
 
-  Item.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    money = json['money'];
-    created = json['created'];
-    control = json['control'];
-    item = json['item'];
+  factory Item.fromJson(Map<String, dynamic> json) {
+    return Item(
+      id: json['id'],
+      name: json['name'],
+      money: json['money'],
+      created: json['created'],
+      control: json['control'],
+      item: json['item'],
+    );
   }
 
   Map<String, dynamic> toJson() {
