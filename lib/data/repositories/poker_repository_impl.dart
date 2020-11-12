@@ -2,6 +2,7 @@ import 'package:poker/data/data_sources/poker_data_sources.dart';
 import 'package:poker/domain/entities/app_error.dart';
 import 'package:poker/data/models/round_model.dart';
 import 'package:dartz/dartz.dart';
+import 'package:poker/domain/entities/round_entity.dart';
 import 'package:poker/domain/repositories/poker_repositories.dart';
 
 class PokerRepositoryImpl extends PokerRepository {
