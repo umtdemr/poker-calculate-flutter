@@ -3,8 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:poker/data/models/round_item_model.dart';
 import 'package:poker/presentation/blocs/bloc/room_bloc.dart';
 import 'package:poker/presentation/journeys/rounds/add_round_single_widget.dart';
+import 'package:poker/presentation/widget/button.dart';
 
 class AddRoundScreen extends StatefulWidget {
+  final List<Item> items;
+
+  const AddRoundScreen({Key key, this.items}) : super(key: key);
   @override
   _AddRoundScreenState createState() => _AddRoundScreenState();
 }
@@ -12,17 +16,26 @@ class AddRoundScreen extends StatefulWidget {
 class _AddRoundScreenState extends State<AddRoundScreen> {
   List users = [];
   @override
+  void initState() {
+    for (Item item in widget.items) {
+      users.add(
+        {
+          "name": item.name,
+          "current": int.parse(item.money.split(".")[0]),
+          "process": -5
+        },
+      );
+    }
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    users = [];
     return Scaffold(
       body: BlocBuilder<RoomBloc, RoomState>(
         builder: (context, state) {
           if (state is RoomLoaded) {
-            for (Item item in state.rounds.last.item) {
-              users.add(
-                {"name": item.name, "current": item.money, "process": -5},
-              );
-            }
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -33,7 +46,7 @@ class _AddRoundScreenState extends State<AddRoundScreen> {
                     [
                       ListView.builder(
                         shrinkWrap: true,
-                        itemCount: state.rounds.last.item.length,
+                        itemCount: users.length,
                         itemBuilder: (context, index) {
                           return AddRoundSingleWidget(
                             name: users[index]["name"],
@@ -42,12 +55,44 @@ class _AddRoundScreenState extends State<AddRoundScreen> {
                             onChange: (type) {
                               setState(() {
                                 if (type == "decremented") {
-                                  print("azalt" +
-                                      users[index]["process"].toString());
                                   users[index]["process"] -= 5;
+                                } else if (type == "incremented") {
+                                  users[index]["process"] += 5;
                                 }
                               });
                             },
+                            longPress: () {
+                              int otherTotals = 0;
+                              for (var user in users) {
+                                if (user["name"] != users[index]["name"]) {
+                                  otherTotals += user["process"];
+                                }
+                              }
+                              otherTotals *= -1;
+                              setState(() {
+                                users[index]["process"] = otherTotals;
+                              });
+                            },
+                          );
+                        },
+                      ),
+                      Button(
+                        text: "Kaydet",
+                        onPressed: () {
+                          List newUsers = [];
+                          for (var user in users) {
+                            newUsers.add(
+                              {
+                                "name": user["name"],
+                                "money": user["current"] + user["process"]
+                              },
+                            );
+                          }
+                          BlocProvider.of<RoomBloc>(context).add(
+                            AddRoundEvent(
+                              accesKey: state.accessKey,
+                              users: newUsers,
+                            ),
                           );
                         },
                       ),

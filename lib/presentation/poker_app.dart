@@ -14,12 +14,12 @@ class PokerApp extends StatefulWidget {
 }
 
 class _PokerAppState extends State<PokerApp> {
-  RoomBloc roomBloc = RoomBloc(getItInstance());
+  RoomBloc roomBloc;
 
   @override
   void initState() {
     super.initState();
-    roomBloc = RoomBloc(getItInstance());
+    roomBloc = RoomBloc(getItInstance(), getItInstance());
   }
 
   @override

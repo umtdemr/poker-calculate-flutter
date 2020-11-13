@@ -19,4 +19,14 @@ class PokerRepositoryImpl extends PokerRepository {
       return Left(AppError(AppErrorType.api));
     }
   }
+
+  @override
+  Future<Either<AppError, bool>> addRound(String accesKey, List users) async {
+    try {
+      final isAdded = await remoteDataSource.addRound(accesKey, users);
+      return Right(isAdded);
+    } on Exception {
+      return Left(AppError(AppErrorType.api));
+    }
+  }
 }

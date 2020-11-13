@@ -8,12 +8,7 @@ class ApiClient {
   ApiClient(this._client);
 
   dynamic get(String path) async {
-    final response = await _client.get(
-      '${ApiConstants.BASE_URL}$path',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    );
+    final response = await _client.get('${ApiConstants.BASE_URL}$path');
     print(response.statusCode);
 
     if (response.statusCode == 200) {
@@ -21,5 +16,10 @@ class ApiClient {
     } else {
       throw Exception(response.reasonPhrase);
     }
+  }
+
+  dynamic post(String path, data) async {
+    print(data);
+    return "eklendi";
   }
 }

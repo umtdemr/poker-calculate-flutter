@@ -21,4 +21,6 @@ class RoomLoaded extends RoomState {
   List<Object> get props => [accessKey];
 }
 
+class RoundAddedState extends RoomState {}
+
 class RoomFailState extends RoomState {}

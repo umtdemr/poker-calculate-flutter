@@ -44,7 +44,8 @@ class _RoundScreenState extends State<RoundScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AddRoundScreen(),
+                            builder: (context) =>
+                                AddRoundScreen(items: state.rounds.last.item),
                           ),
                         );
                       },
