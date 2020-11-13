@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:poker/common/constants/size_constants.dart';
 import 'package:poker/data/models/round_item_model.dart';
 import 'package:poker/presentation/blocs/bloc/room_bloc.dart';
-import 'package:poker/presentation/journeys/rounds/add_round_screen.dart';
 import 'package:poker/presentation/journeys/rounds/round_app_bar.dart';
 import 'package:poker/common/extensions/size_extensions.dart';
 import 'package:poker/presentation/journeys/rounds/round_item_list_widget.dart';
@@ -13,61 +12,35 @@ import 'package:poker/presentation/themes/theme_color.dart';
 import 'package:poker/presentation/themes/theme_text.dart';
 import 'package:poker/presentation/widget/seperator.dart';
 
-class RoundScreen extends StatefulWidget {
+class RoundScreenOld extends StatefulWidget {
   @override
   _RoundScreenState createState() => _RoundScreenState();
 }
 
-class _RoundScreenState extends State<RoundScreen> {
+class _RoundScreenState extends State<RoundScreenOld> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<RoomBloc, RoomState>(
-        builder: (context, state) {
-          if (state is RoomLoaded) {
-            return CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  title: Text("Poker admin"),
-                  centerTitle: true,
-                  expandedHeight: Sizes.dimen_40.h,
-                  floating: true,
-                  pinned: true,
-                  elevation: 3.2,
-                  actions: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.add,
-                        size: Sizes.dimen_16.h,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddRoundScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.refresh,
-                        size: Sizes.dimen_16.h,
-                      ),
-                      onPressed: () {
-                        BlocProvider.of<RoomBloc>(context)
-                            .add(EnterRoomEvent(state.accessKey));
-                      },
-                    ),
-                  ],
-                  bottom: PreferredSize(
-                    preferredSize: null,
-                    child: Text("Oda şifresi: ${state.accessKey}"),
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: Sizes.dimen_12.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            RoundAppBar(
+              isAdmin: true,
+            ),
+            Text(
+              "şifre: deneme",
+              textAlign: TextAlign.end,
+            ),
+            SizedBox(
+              height: Sizes.dimen_12.h,
+            ),
+            BlocBuilder<RoomBloc, RoomState>(
+              builder: (context, state) {
+                if (state is RoomLoaded) {
+                  return Column(
+                    children: [
                       TitleWithSeperatorWidget(
                         title: "Güncel Durum",
                       ),
@@ -93,29 +66,26 @@ class _RoundScreenState extends State<RoundScreen> {
                               ),
                             );
                           }
-                          return Text("is room loaded");
+                          return Text("El bilgisi yok");
                         },
                       ),
                       SizedBox(
-                        height: Sizes.dimen_18.h,
+                        height: Sizes.dimen_20.h,
                       ),
                       TitleWithSeperatorWidget(
                         title: "Oynanan eller",
                       ),
-                      Container(
-                        height: Sizes.dimen_200.h,
-                        child: RoundItemListWidget(
-                          rounds: state.rounds,
-                        ),
+                      RoundItemListWidget(
+                        rounds: state.rounds,
                       ),
                     ],
-                  ),
-                ),
-              ],
-            );
-          }
-          return Text("Oluyo bi şeyler");
-        },
+                  );
+                }
+                return Text("selam");
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

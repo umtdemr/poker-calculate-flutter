@@ -14,9 +14,6 @@ class TextfieldWidget extends StatelessWidget {
     return TextField(
       decoration: InputDecoration(
         hintText: hintText ?? "deneem",
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
         filled: true,
         fillColor: AppColor.royalBlue,
       ),

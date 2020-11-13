@@ -28,6 +28,7 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
 
   Stream<RoomState> _mapEnterRoomToState(
       EnterRoomEvent event, RoomState state) async* {
+    yield RoomLoadingState();
     final Either<AppError, List<RoundEntity>> response =
         await getRounds(RoomParams(event.accesKey));
     yield response.fold(
