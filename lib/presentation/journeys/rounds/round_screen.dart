@@ -25,6 +25,7 @@ class _RoundScreenState extends State<RoundScreen> {
       body: BlocBuilder<RoomBloc, RoomState>(
         builder: (context, state) {
           if (state is RoomLoaded) {
+            print(state.rounds.last.item);
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -84,7 +85,8 @@ class _RoundScreenState extends State<RoundScreen> {
                               _childrens.add(
                                 SingleItem(
                                   name: item.name,
-                                  price: 230.0,
+                                  price: item.money,
+                                  type: item.control,
                                 ),
                               );
                             }

@@ -22,7 +22,8 @@ class PokerRemoteDataSourceImpl extends PokerRemoteDataSource {
 
   @override
   Future<bool> addRound(String accesKey, List users) async {
-    final response = await _client.post('round', users);
+    final response = await _client.post(
+        'round', <String, dynamic>{"users": users, "access_key": accesKey});
     return true;
   }
 }

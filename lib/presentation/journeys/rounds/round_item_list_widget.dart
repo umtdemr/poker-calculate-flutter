@@ -21,7 +21,7 @@ class RoundItemListWidget extends StatelessWidget {
           _roundChildrens.add(
             SingleItem(
               name: item.name,
-              price: 222.2,
+              price: item.money,
             ),
           );
         }

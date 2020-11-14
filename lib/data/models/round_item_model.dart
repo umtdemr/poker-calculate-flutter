@@ -1,4 +1,6 @@
-class Item {
+import 'package:equatable/equatable.dart';
+
+class Item extends Equatable {
   final int id;
   final String name;
   final String money;
@@ -29,4 +31,10 @@ class Item {
     data['item'] = this.item;
     return data;
   }
+
+  @override
+  List<Object> get props => [id, name, control];
+
+  @override
+  bool get stringify => true;
 }

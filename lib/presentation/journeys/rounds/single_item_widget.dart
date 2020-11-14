@@ -6,9 +6,19 @@ import 'package:poker/presentation/themes/theme_text.dart';
 
 class SingleItem extends StatelessWidget {
   final String name;
-  final double price;
+  final String price;
+  final String type;
 
-  const SingleItem({this.name, this.price});
+  TextStyle getColorizedTextStyle(String type) {
+    if (type == "incremented") {
+      return TextStyle(color: Colors.green);
+    } else if (type == "decremented") {
+      return TextStyle(color: Colors.red);
+    }
+    return TextStyle(color: Colors.white);
+  }
+
+  const SingleItem({this.name, this.price, this.type});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,7 +45,7 @@ class SingleItem extends StatelessWidget {
           Text(
             price.toString(),
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.incrementedText,
+            style: getColorizedTextStyle(this.type),
           ),
         ],
       ),
