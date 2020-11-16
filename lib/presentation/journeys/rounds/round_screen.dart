@@ -4,14 +4,10 @@ import 'package:poker/common/constants/size_constants.dart';
 import 'package:poker/data/models/round_item_model.dart';
 import 'package:poker/presentation/blocs/bloc/room_bloc.dart';
 import 'package:poker/presentation/journeys/rounds/add_round_screen.dart';
-import 'package:poker/presentation/journeys/rounds/round_app_bar.dart';
 import 'package:poker/common/extensions/size_extensions.dart';
 import 'package:poker/presentation/journeys/rounds/round_item_list_widget.dart';
 import 'package:poker/presentation/journeys/rounds/single_item_widget.dart';
 import 'package:poker/presentation/journeys/rounds/title_with_seperator_widget.dart';
-import 'package:poker/presentation/themes/theme_color.dart';
-import 'package:poker/presentation/themes/theme_text.dart';
-import 'package:poker/presentation/widget/seperator.dart';
 
 class RoundScreen extends StatefulWidget {
   @override
@@ -22,10 +18,15 @@ class _RoundScreenState extends State<RoundScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<RoomBloc, RoomState>(
+      body: BlocConsumer<RoomBloc, RoomState>(
+        listener: (context, state) {
+          if (state is RoundAddedState) {
+            BlocProvider.of<RoomBloc>(context)
+                .add(EnterRoomEvent(state.accessKey));
+          }
+        },
         builder: (context, state) {
           if (state is RoomLoaded) {
-            print(state.rounds.last.item);
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -67,56 +68,71 @@ class _RoundScreenState extends State<RoundScreen> {
                     child: Text("Oda şifresi: ${state.accessKey}"),
                   ),
                 ),
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      TitleWithSeperatorWidget(
-                        title: "Güncel Durum",
-                      ),
-                      SizedBox(
-                        height: Sizes.dimen_6.h,
-                      ),
-                      BlocBuilder<RoomBloc, RoomState>(
-                        builder: (context, state) {
-                          if (state is RoomLoaded) {
-                            List<Item> _items = state.rounds.last.item;
-                            List<Widget> _childrens = [];
-                            for (Item item in _items) {
-                              _childrens.add(
-                                SingleItem(
-                                  name: item.name,
-                                  price: item.money,
-                                  type: item.control,
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(horizontal: Sizes.dimen_16.w),
+                  sliver: SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        TitleWithSeperatorWidget(
+                          title: "Güncel Durum",
+                        ),
+                        SizedBox(
+                          height: Sizes.dimen_6.h,
+                        ),
+                        BlocBuilder<RoomBloc, RoomState>(
+                          builder: (context, state) {
+                            if (state is RoomLoaded) {
+                              List<Item> _items = state.rounds.last.item;
+                              List<Widget> _childrens = [];
+                              for (Item item in _items) {
+                                _childrens.add(
+                                  SingleItem(
+                                    name: item.name,
+                                    price: item.money,
+                                    type: item.control,
+                                  ),
+                                );
+                              }
+                              return SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: _childrens,
                                 ),
                               );
                             }
-                            return SingleChildScrollView(
-                              child: Row(
-                                children: _childrens,
-                              ),
-                            );
-                          }
-                          return Text("is room loaded");
-                        },
-                      ),
-                      SizedBox(
-                        height: Sizes.dimen_18.h,
-                      ),
-                      TitleWithSeperatorWidget(
-                        title: "Oynanan eller",
-                      ),
-                      Container(
-                        height: Sizes.dimen_200.h,
-                        child: RoundItemListWidget(
-                          rounds: state.rounds,
+                            return Text("is room loaded");
+                          },
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          height: Sizes.dimen_18.h,
+                        ),
+                        TitleWithSeperatorWidget(
+                          title: "Oynanan eller",
+                        ),
+                        Container(
+                          height: Sizes.dimen_200.h,
+                          child: RoundItemListWidget(
+                            rounds: state.rounds,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
             );
+          } else if (state is RoomLoadingState) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Center(
+                  child: Text("Lütfen bekleyin..."),
+                ),
+              ],
+            );
           }
+
           return Text("Oluyo bi şeyler");
         },
       ),

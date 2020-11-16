@@ -33,7 +33,12 @@ class _AddRoundScreenState extends State<AddRoundScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<RoomBloc, RoomState>(
+      body: BlocConsumer<RoomBloc, RoomState>(
+        listener: (context, state) {
+          if (state is RoundAddedState) {
+            Navigator.pop(context);
+          }
+        },
         builder: (context, state) {
           if (state is RoomLoaded) {
             return CustomScrollView(
@@ -98,6 +103,16 @@ class _AddRoundScreenState extends State<AddRoundScreen> {
                       ),
                     ],
                   ),
+                ),
+              ],
+            );
+          } else if (state is RoundAddingState) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Center(
+                  child: Text("Round ekleniyor lütfen bekleyin..."),
                 ),
               ],
             );

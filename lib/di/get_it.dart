@@ -4,6 +4,7 @@ import 'package:poker/data/core/api_client.dart';
 import 'package:poker/data/data_sources/poker_data_sources.dart';
 import 'package:poker/data/repositories/poker_repository_impl.dart';
 import 'package:poker/domain/repositories/poker_repositories.dart';
+import 'package:poker/domain/usecases/add_round.dart';
 import 'package:poker/domain/usecases/get_rounds.dart';
 
 final getItInstance = GetIt.I;
@@ -20,4 +21,6 @@ Future init() async {
 
   getItInstance
       .registerLazySingleton<GetRounds>(() => GetRounds(getItInstance()));
+
+  getItInstance.registerFactory<AddRound>(() => AddRound(getItInstance()));
 }

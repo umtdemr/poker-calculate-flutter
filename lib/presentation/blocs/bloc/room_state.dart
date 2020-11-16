@@ -21,6 +21,15 @@ class RoomLoaded extends RoomState {
   List<Object> get props => [accessKey];
 }
 
-class RoundAddedState extends RoomState {}
+class RoundAddingState extends RoomState {}
+
+class RoundAddedState extends RoomState {
+  final String accessKey;
+
+  RoundAddedState(this.accessKey);
+
+  @override
+  List<Object> get props => [accessKey];
+}
 
 class RoomFailState extends RoomState {}

@@ -24,6 +24,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocConsumer<RoomBloc, RoomState>(
+        listenWhen: (previousState, state) {
+          print(previousState);
+          print(state);
+          return true;
+        },
         listener: (context, state) {
           print("State değişti" + state.toString());
           if (state is RoomLoaded) {

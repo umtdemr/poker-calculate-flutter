@@ -8,7 +8,9 @@ import 'package:poker/data/models/round_model.dart';
 import 'package:poker/domain/entities/app_error.dart';
 import 'package:poker/domain/entities/room_params.dart';
 import 'package:poker/domain/entities/round_entity.dart';
+import 'package:poker/domain/entities/round_params.dart';
 import 'package:poker/domain/repositories/poker_repositories.dart';
+import 'package:poker/domain/usecases/add_round.dart';
 import 'package:poker/domain/usecases/get_rounds.dart';
 
 part 'room_event.dart';
@@ -17,7 +19,12 @@ part 'room_state.dart';
 class RoomBloc extends Bloc<RoomEvent, RoomState> {
   final GetRounds getRounds;
   final PokerRepository repository;
-  RoomBloc(this.getRounds, this.repository) : super(RoomInitial());
+  final AddRound addRound;
+  RoomBloc(
+    this.getRounds,
+    this.repository,
+    this.addRound,
+  ) : super(RoomInitial());
 
   @override
   Stream<RoomState> mapEventToState(
@@ -46,6 +53,12 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
 
   Stream<RoomState> _mapAddRoundToState(
       AddRoundEvent event, RoomState state) async* {
-    final response = repository.addRound(event.accesKey, event.users);
+    yield RoundAddingState();
+    final Either<AppError, bool> response = await addRound(
+        RoundParams(accesKey: event.accesKey, users: event.users));
+    yield response.fold(
+      (l) => RoomFailState(),
+      (r) => RoundAddedState(event.accesKey),
+    );
   }
 }

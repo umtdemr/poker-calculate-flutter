@@ -16,14 +16,29 @@ class PokerRemoteDataSourceImpl extends PokerRemoteDataSource {
   Future<List<Round>> getRounds(String accesKey) async {
     final response = await _client.get('room/?access_key=$accesKey');
     final rounds = RoomModel.fromJson(response[0]).round;
-    print(rounds);
     return rounds;
   }
 
   @override
   Future<bool> addRound(String accesKey, List users) async {
     final response = await _client.post(
-        'round', <String, dynamic>{"users": users, "access_key": accesKey});
+      'round/',
+      <String, dynamic>{"access_key": accesKey},
+    );
+
+    int roundId = response["id"];
+
+    for (int i = 0; i < users.length; i++) {
+      await _client.post(
+        'rounditem/',
+        <String, dynamic>{
+          'name': users[i]["name"],
+          'money': users[i]["money"],
+          'item': roundId
+        },
+      );
+    }
+
     return true;
   }
 }

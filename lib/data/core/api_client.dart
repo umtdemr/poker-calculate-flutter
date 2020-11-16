@@ -22,7 +22,22 @@ class ApiClient {
   }
 
   dynamic post(String path, data) async {
-    final roundResponse = await _client.post(
+    final response = await _client.post(
+      '${ApiConstants.BASE_URL}$path',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+      body: json.encode(data),
+    );
+    print(response.body);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return json.decode(response.body);
+    } else {
+      throw Exception(response.reasonPhrase);
+    }
+  }
+
+  /*final roundResponse = await _client.post(
       '${ApiConstants.BASE_URL}round/',
       headers: <String, String>{"Content-Type": "application/json"},
       body: jsonEncode(
@@ -56,4 +71,5 @@ class ApiClient {
 
     return "eklendi";
   }
+  */
 }
