@@ -4,6 +4,7 @@ import 'package:poker/data/models/round_item_model.dart';
 import 'package:poker/presentation/blocs/bloc/room_bloc.dart';
 import 'package:poker/presentation/journeys/rounds/add_round_single_widget.dart';
 import 'package:poker/presentation/widget/button.dart';
+import 'package:poker/presentation/widget/loading_with_text.dart';
 
 class AddRoundScreen extends StatefulWidget {
   final List<Item> items;
@@ -107,17 +108,13 @@ class _AddRoundScreenState extends State<AddRoundScreen> {
               ],
             );
           } else if (state is RoundAddingState) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Center(
-                  child: Text("Round ekleniyor lütfen bekleyin..."),
-                ),
-              ],
+            return LoadingWithText(
+              loadingText: "Ronud ekleniyor. lütfen bekleyin...",
             );
           }
-          return Text("oluyo bi şeyler");
+          return LoadingWithText(
+            loadingText: "İşlem bekleniyor...",
+          );
         },
       ),
     );

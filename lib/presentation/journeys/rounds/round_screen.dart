@@ -8,6 +8,7 @@ import 'package:poker/common/extensions/size_extensions.dart';
 import 'package:poker/presentation/journeys/rounds/round_item_list_widget.dart';
 import 'package:poker/presentation/journeys/rounds/single_item_widget.dart';
 import 'package:poker/presentation/journeys/rounds/title_with_seperator_widget.dart';
+import 'package:poker/presentation/widget/loading_with_text.dart';
 
 class RoundScreen extends StatefulWidget {
   @override
@@ -122,14 +123,8 @@ class _RoundScreenState extends State<RoundScreen> {
               ],
             );
           } else if (state is RoomLoadingState) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Center(
-                  child: Text("Lütfen bekleyin..."),
-                ),
-              ],
+            return LoadingWithText(
+              loadingText: "Yenileniyor. Lütfen bekleyin...",
             );
           }
 

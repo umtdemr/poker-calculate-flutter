@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:poker/common/constants/size_constants.dart';
 import 'package:poker/di/get_it.dart';
 import 'package:poker/presentation/blocs/bloc/room_bloc.dart';
+import 'package:poker/presentation/journeys/room/create_room_screen.dart';
 import 'package:poker/presentation/journeys/rounds/round_screen.dart';
 import 'package:poker/presentation/themes/theme_color.dart';
 import 'package:poker/common/extensions/size_extensions.dart';
 import 'package:poker/presentation/widget/button.dart';
+import 'package:poker/presentation/widget/loading_with_text.dart';
 import 'package:poker/presentation/widget/seperator.dart';
 import 'package:poker/presentation/widget/text_field.dart';
 import 'package:poker/presentation/widget/text_title.dart';
@@ -25,18 +27,25 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: BlocConsumer<RoomBloc, RoomState>(
         listenWhen: (previousState, state) {
+          print("Listen when is working now");
+          print("----------------------------------");
           print(previousState);
           print(state);
           return true;
         },
         listener: (context, state) {
-          print("State değişti" + state.toString());
+          /*print("State değişti" + state.toString());
           if (state is RoomLoaded) {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => RoundScreen()));
-          }
+          }*/
         },
         builder: (context, state) {
+          if (state is RoomLoadingState) {
+            return LoadingWithText(
+              loadingText: "Giriş yapılıyor. Lütfen bekleyin...",
+            );
+          }
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
@@ -71,6 +80,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   BlocProvider.of<RoomBloc>(context)
                       .add(EnterRoomEvent(accesKey));
                   _controller.clear();
+                  if (state is RoomLoaded) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => RoundScreen()));
+                  }
                 },
                 text: "Odaya Katıl",
               ),
@@ -82,7 +95,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: Sizes.dimen_12.h,
               ),
               Button(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateRoomScreen(),
+                    ),
+                  );
+                },
                 text: "Oda Oluştur",
               ),
             ],

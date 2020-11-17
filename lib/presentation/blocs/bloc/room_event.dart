@@ -27,3 +27,12 @@ class AddRoundEvent extends RoomEvent {
   @override
   List<Object> get props => [accesKey];
 }
+
+class CreateRoomEvent extends RoomEvent {
+  final List users;
+
+  CreateRoomEvent(this.users);
+
+  @override
+  List<Object> get props => [users];
+}
