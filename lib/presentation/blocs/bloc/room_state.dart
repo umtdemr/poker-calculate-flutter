@@ -33,3 +33,14 @@ class RoundAddedState extends RoomState {
 }
 
 class RoomFailState extends RoomState {}
+
+class CreatingRoomState extends RoomState {}
+
+class RoomCreated extends RoomState {
+  final String accessKey;
+
+  RoomCreated(this.accessKey);
+
+  @override
+  List<Object> get props => [accessKey];
+}

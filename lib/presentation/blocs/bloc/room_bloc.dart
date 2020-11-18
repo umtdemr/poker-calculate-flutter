@@ -3,13 +3,11 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:poker/data/models/room_model.dart';
-import 'package:poker/data/models/round_model.dart';
+import 'package:poker/domain/entities/add_room_params.dart';
 import 'package:poker/domain/entities/app_error.dart';
 import 'package:poker/domain/entities/room_params.dart';
 import 'package:poker/domain/entities/round_entity.dart';
 import 'package:poker/domain/entities/round_params.dart';
-import 'package:poker/domain/repositories/poker_repositories.dart';
 import 'package:poker/domain/usecases/add_round.dart';
 import 'package:poker/domain/usecases/create_room.dart';
 import 'package:poker/domain/usecases/get_rounds.dart';
@@ -36,7 +34,7 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
     } else if (event is AddRoundEvent) {
       yield* _mapAddRoundToState(event, state);
     } else if (event is CreateRoomEvent) {
-      //print("selam");
+      yield* _mapCreateRoomToState(event, state);
     }
   }
 
@@ -62,6 +60,19 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
     yield response.fold(
       (l) => RoomFailState(),
       (r) => RoundAddedState(event.accesKey),
+    );
+  }
+
+  Stream<RoomState> _mapCreateRoomToState(
+      CreateRoomEvent event, RoomState state) async* {
+    yield CreatingRoomState();
+    final Either<AppError, String> response = await createRoom(
+      AddRoomParams(event.users),
+    );
+
+    yield response.fold(
+      (l) => RoomFailState(),
+      (accessKey) => RoomCreated(accessKey),
     );
   }
 }

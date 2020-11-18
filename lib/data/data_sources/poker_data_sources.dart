@@ -45,8 +45,12 @@ class PokerRemoteDataSourceImpl extends PokerRemoteDataSource {
 
   @override
   Future<String> createRoom(List users) async {
-    print("cREATE ROOM DATA SOURCE");
-    print(users);
-    return "selam";
+    final roomResponse =
+        await _client.post('room/', <String, dynamic>{"generate": true});
+    final String accessKey = roomResponse["access_key"];
+
+    await addRound(accessKey, users);
+
+    return accessKey;
   }
 }
