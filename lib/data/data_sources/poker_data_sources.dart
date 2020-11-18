@@ -5,6 +5,7 @@ import 'package:poker/data/models/round_model.dart';
 abstract class PokerRemoteDataSource {
   Future<List<Round>> getRounds(String accesKey);
   Future<bool> addRound(String accesKey, List users);
+  Future<String> createRoom(List users);
 }
 
 class PokerRemoteDataSourceImpl extends PokerRemoteDataSource {
@@ -40,5 +41,12 @@ class PokerRemoteDataSourceImpl extends PokerRemoteDataSource {
     }
 
     return true;
+  }
+
+  @override
+  Future<String> createRoom(List users) async {
+    print("cREATE ROOM DATA SOURCE");
+    print(users);
+    return "selam";
   }
 }

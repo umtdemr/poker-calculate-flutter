@@ -6,4 +6,5 @@ import 'package:poker/domain/entities/round_entity.dart';
 abstract class PokerRepository {
   Future<Either<AppError, List<RoundEntity>>> getRounds(String accesKey);
   Future<Either<AppError, bool>> addRound(String accessKey, List users);
+  Future<Either<AppError, String>> createRoom(List users);
 }

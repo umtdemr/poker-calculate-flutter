@@ -11,6 +11,7 @@ import 'package:poker/domain/entities/round_entity.dart';
 import 'package:poker/domain/entities/round_params.dart';
 import 'package:poker/domain/repositories/poker_repositories.dart';
 import 'package:poker/domain/usecases/add_round.dart';
+import 'package:poker/domain/usecases/create_room.dart';
 import 'package:poker/domain/usecases/get_rounds.dart';
 
 part 'room_event.dart';
@@ -18,12 +19,12 @@ part 'room_state.dart';
 
 class RoomBloc extends Bloc<RoomEvent, RoomState> {
   final GetRounds getRounds;
-  final PokerRepository repository;
   final AddRound addRound;
+  final CreateRoom createRoom;
   RoomBloc(
     this.getRounds,
-    this.repository,
     this.addRound,
+    this.createRoom,
   ) : super(RoomInitial());
 
   @override
@@ -34,6 +35,8 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
       yield* _mapEnterRoomToState(event, state);
     } else if (event is AddRoundEvent) {
       yield* _mapAddRoundToState(event, state);
+    } else if (event is CreateRoomEvent) {
+      //print("selam");
     }
   }
 

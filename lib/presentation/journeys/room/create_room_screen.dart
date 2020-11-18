@@ -25,98 +25,107 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Oda oluşturma"),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(Sizes.dimen_16.w),
-        child: Column(
-          children: [
-            TextfieldWidget(
-              hintText: "Ad giriniz",
-              onChange: (value) {
-                setState(() {
-                  addingName = value;
-                });
-              },
-            ),
-            Button(
-              onPressed: () {
-                setState(() {
-                  users.add({"name": addingName, "money": 100.0});
-                });
-              },
-              text: "Ekle",
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: users.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(vertical: Sizes.dimen_4.h),
-                    padding: EdgeInsets.symmetric(horizontal: Sizes.dimen_8.w),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [AppColor.royalBlue, AppColor.violet],
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Row(
-                          children: [
-                            Text(users[index]["name"]),
-                            SizedBox(
-                              width: Sizes.dimen_18.w,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            title: Text("Oda oluştur"),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: Sizes.dimen_12.w),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  TextfieldWidget(
+                    hintText: "Ad giriniz",
+                    onChange: (value) {
+                      setState(() {
+                        addingName = value;
+                      });
+                    },
+                  ),
+                  Button(
+                    onPressed: () {
+                      setState(() {
+                        users.add({"name": addingName, "money": 100.0});
+                      });
+                    },
+                    text: "Ekle",
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: users.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin:
+                              EdgeInsets.symmetric(vertical: Sizes.dimen_4.h),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: Sizes.dimen_8.w),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [AppColor.royalBlue, AppColor.violet],
                             ),
-                            Text('${users[index]["money"].toString()} ₺'),
-                          ],
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.close,
-                            color: Colors.white,
                           ),
-                          onPressed: () {
-                            setState(() {
-                              users.removeAt(index);
-                            });
-                          },
-                        )
-                      ],
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(users[index]["name"]),
+                                  SizedBox(
+                                    width: Sizes.dimen_18.w,
+                                  ),
+                                  Text('${users[index]["money"].toString()} ₺'),
+                                ],
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    users.removeAt(index);
+                                  });
+                                },
+                              )
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
+                  ),
+                  SizedBox(
+                    height: Sizes.dimen_16.h,
+                  ),
+                  TextfieldWidget(
+                    hintText: "Başlangıç Parası",
+                    onChange: (value) {
+                      setState(() {
+                        roomPrice = double.parse(value);
+                      });
+                    },
+                  ),
+                  Button(
+                    text: "Oda oluştur",
+                    onPressed: () {
+                      setState(() {
+                        users = users.map((e) {
+                          e["money"] = roomPrice;
+                          return e;
+                        }).toList();
+                        BlocProvider.of<RoomBloc>(context).add(
+                          CreateRoomEvent(users),
+                        );
+                      });
+                    },
+                  ),
+                ],
               ),
             ),
-            SizedBox(
-              height: Sizes.dimen_16.h,
-            ),
-            TextfieldWidget(
-              hintText: "Başlangıç Parası",
-              onChange: (value) {
-                setState(() {
-                  roomPrice = double.parse(value);
-                });
-              },
-            ),
-            Button(
-              text: "Oda oluştur",
-              onPressed: () {
-                setState(() {
-                  users = users.map((e) {
-                    e["money"] = roomPrice;
-                    return e;
-                  }).toList();
-                  BlocProvider.of<RoomBloc>(context).add(
-                    CreateRoomEvent(users),
-                  );
-                });
-              },
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

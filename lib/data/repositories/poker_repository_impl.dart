@@ -29,4 +29,9 @@ class PokerRepositoryImpl extends PokerRepository {
       return Left(AppError(AppErrorType.api));
     }
   }
+
+  @override
+  Future<Either<AppError, String>> createRoom(List users) async {
+    final response = await remoteDataSource.createRoom(users);
+  }
 }
