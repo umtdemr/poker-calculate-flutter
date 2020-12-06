@@ -7,8 +7,9 @@ import 'package:poker/presentation/journeys/rounds/single_item_widget.dart';
 
 class RoundItemListWidget extends StatelessWidget {
   final List<Round> rounds;
+  final Function deleteAction;
 
-  const RoundItemListWidget({@required this.rounds});
+  const RoundItemListWidget({@required this.rounds, this.deleteAction});
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -33,16 +34,21 @@ class RoundItemListWidget extends StatelessWidget {
               children: [
                 Text(
                   thisRound.toString(),
-                  style: TextStyle(fontSize: 35.2),
+                  style: TextStyle(fontSize: 22.sp),
                 ),
                 SizedBox(
                   width: Sizes.dimen_20.w,
                 ),
                 ..._roundChildrens,
-                Icon(
-                  Icons.close,
-                  size: Sizes.dimen_40.sp,
-                  color: Colors.white,
+                IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    size: Sizes.dimen_40.sp,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    deleteAction(index);
+                  },
                 ),
               ],
             ),

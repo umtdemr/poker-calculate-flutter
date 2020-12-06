@@ -114,6 +114,10 @@ class _RoundScreenState extends State<RoundScreen> {
                           height: Sizes.dimen_200.h,
                           child: RoundItemListWidget(
                             rounds: state.rounds,
+                            deleteAction: (index) {
+                              BlocProvider.of<RoomBloc>(context)
+                                  .add(DeleteRoundEvent(index));
+                            },
                           ),
                         ),
                       ],
@@ -125,6 +129,10 @@ class _RoundScreenState extends State<RoundScreen> {
           } else if (state is RoomLoadingState) {
             return LoadingWithText(
               loadingText: "Yenileniyor. Lütfen bekleyin...",
+            );
+          } else if (state is RoundDeletingState) {
+            return LoadingWithText(
+              loadingText: "Round siliniyor. Lütfen bekleyin",
             );
           }
 

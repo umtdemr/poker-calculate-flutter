@@ -19,7 +19,12 @@ class _PokerAppState extends State<PokerApp> {
   @override
   void initState() {
     super.initState();
-    roomBloc = RoomBloc(getItInstance(), getItInstance(), getItInstance());
+    roomBloc = RoomBloc(
+      getItInstance(),
+      getItInstance(),
+      getItInstance(),
+      getItInstance(),
+    );
   }
 
   @override

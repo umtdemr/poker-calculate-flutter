@@ -6,6 +6,7 @@ import 'package:poker/data/repositories/poker_repository_impl.dart';
 import 'package:poker/domain/repositories/poker_repositories.dart';
 import 'package:poker/domain/usecases/add_round.dart';
 import 'package:poker/domain/usecases/create_room.dart';
+import 'package:poker/domain/usecases/delete_round.dart';
 import 'package:poker/domain/usecases/get_rounds.dart';
 
 final getItInstance = GetIt.I;
@@ -25,4 +26,6 @@ Future init() async {
 
   getItInstance.registerFactory<AddRound>(() => AddRound(getItInstance()));
   getItInstance.registerFactory<CreateRoom>(() => CreateRoom(getItInstance()));
+  getItInstance
+      .registerFactory<DeleteRound>(() => DeleteRound(getItInstance()));
 }

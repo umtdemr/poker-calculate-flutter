@@ -39,4 +39,14 @@ class PokerRepositoryImpl extends PokerRepository {
       return Left(AppError(AppErrorType.api));
     }
   }
+
+  @override
+  Future<Either<AppError, bool>> deleteRound(int index) async {
+    try {
+      final response = await remoteDataSource.deleteRound(index);
+      return Right(response);
+    } on Exception {
+      return Left(AppError(AppErrorType.api));
+    }
+  }
 }

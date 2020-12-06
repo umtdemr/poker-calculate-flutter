@@ -6,6 +6,7 @@ abstract class PokerRemoteDataSource {
   Future<List<Round>> getRounds(String accesKey);
   Future<bool> addRound(String accesKey, List users);
   Future<String> createRoom(List users);
+  Future<bool> deleteRound(int index);
 }
 
 class PokerRemoteDataSourceImpl extends PokerRemoteDataSource {
@@ -52,5 +53,11 @@ class PokerRemoteDataSourceImpl extends PokerRemoteDataSource {
     await addRound(accessKey, users);
 
     return accessKey;
+  }
+
+  @override
+  Future<bool> deleteRound(int index) async {
+    print("indexi silme işlemi: $index");
+    return true;
   }
 }

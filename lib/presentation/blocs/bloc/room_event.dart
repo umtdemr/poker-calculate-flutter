@@ -36,3 +36,12 @@ class CreateRoomEvent extends RoomEvent {
   @override
   List<Object> get props => [users];
 }
+
+class DeleteRoundEvent extends RoomEvent {
+  final int index;
+
+  DeleteRoundEvent(this.index);
+
+  @override
+  List<Object> get props => [index];
+}

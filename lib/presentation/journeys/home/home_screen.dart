@@ -26,19 +26,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocConsumer<RoomBloc, RoomState>(
-        listenWhen: (previousState, state) {
-          print("Listen when is working now");
-          print("----------------------------------");
-          print(previousState);
-          print(state);
-          return true;
-        },
-        listener: (context, state) {
-          /*print("State değişti" + state.toString());
+        listener: (contextListener, state) {
+          print("State değişti" + state.toString());
           if (state is RoomLoaded) {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => RoundScreen()));
-          }*/
+          }
         },
         builder: (context, state) {
           if (state is RoomLoadingState) {
@@ -76,13 +69,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Button(
-                onPressed: () {
-                  BlocProvider.of<RoomBloc>(context)
+                onPressed: () async {
+                  await BlocProvider.of<RoomBloc>(context)
                       .add(EnterRoomEvent(accesKey));
                   _controller.clear();
                   if (state is RoomLoaded) {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => RoundScreen()));
+                    /*Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => RoundScreen()));*/
                   }
                 },
                 text: "Odaya Katıl",

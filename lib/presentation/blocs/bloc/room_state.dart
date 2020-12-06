@@ -44,3 +44,5 @@ class RoomCreated extends RoomState {
   @override
   List<Object> get props => [accessKey];
 }
+
+class RoundDeletingState extends RoomState {}

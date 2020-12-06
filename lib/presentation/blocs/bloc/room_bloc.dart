@@ -5,11 +5,13 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:poker/domain/entities/add_room_params.dart';
 import 'package:poker/domain/entities/app_error.dart';
+import 'package:poker/domain/entities/delete_round_params.dart';
 import 'package:poker/domain/entities/room_params.dart';
 import 'package:poker/domain/entities/round_entity.dart';
 import 'package:poker/domain/entities/round_params.dart';
 import 'package:poker/domain/usecases/add_round.dart';
 import 'package:poker/domain/usecases/create_room.dart';
+import 'package:poker/domain/usecases/delete_round.dart';
 import 'package:poker/domain/usecases/get_rounds.dart';
 
 part 'room_event.dart';
@@ -19,10 +21,12 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
   final GetRounds getRounds;
   final AddRound addRound;
   final CreateRoom createRoom;
+  final DeleteRound deleteRound;
   RoomBloc(
     this.getRounds,
     this.addRound,
     this.createRoom,
+    this.deleteRound,
   ) : super(RoomInitial());
 
   @override
@@ -35,6 +39,11 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
       yield* _mapAddRoundToState(event, state);
     } else if (event is CreateRoomEvent) {
       yield* _mapCreateRoomToState(event, state);
+    } else if (event is DeleteRoundEvent) {
+      final Either<AppError, bool> response = await deleteRound(
+        DeleteRoundParams(index: event.index),
+      );
+      yield RoundDeletingState();
     }
   }
 
